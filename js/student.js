@@ -1,10 +1,9 @@
 (() => {
   // 1. GLOBAL INITIALIZATION
-  guardRole("Student");    // Check security
-  setWho();                // Display student email
-  logoutSetup();           // Initialize logout button
-  setupTabs();             // THIS FIXES NAVIGATION: Enables tab switching
-
+  guardRole("Student");    
+  setWho();                
+  logoutSetup();           
+  setupTabs();             
   // 2. FORM LOGIC
   const form = $("borrowForm");
   
@@ -33,4 +32,5 @@
   }
 
   console.log("Student panel initialized.");
+
 })();
