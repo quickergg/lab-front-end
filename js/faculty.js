@@ -1,13 +1,10 @@
-/* ===============================
-   SmartLab – Faculty Panel Script
-   =============================== */
 
 (() => {
   // 1. Core initialization
   guardRole("Faculty");
   setWho();
   logoutSetup();
-  setupTabs(); // Enables the sidebar navigation
+  setupTabs(); 
 
   // 2. Mock Data
   const schedulesByLab = {
@@ -77,4 +74,5 @@
   });
 
   console.log("Faculty Panel Script Loaded.");
+
 })();
