@@ -22,7 +22,7 @@
       <div class="logo">
         <img src="images/PUPLogo.png" alt="SmartLab Logo" />
         <h2>smartlab.</h2>
-        <!-- logo image -->.
+        <!-- logo image -->
       </div>
 
       <nav class="navigation">
@@ -142,6 +142,7 @@
         </div>
       </section>
 
+      <!-- login sectiion -->
       <section class="login-section" id="login">
         <div class="login-card">
           <h2>Log In</h2>
@@ -149,12 +150,26 @@
             Enter your email and password below to log in.
           </p>
 
-          <form>
+          <form id="loginForm">
             <label>Email</label>
-            <input type="email" placeholder="mail@domain.com" />
+            <input
+              type="email"
+              id="email"
+              placeholder="mail@domain.com"
+              required
+            />
 
             <label>Password</label>
-            <input type="password" placeholder="Enter password" />
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter password"
+              required
+            />
+
+            <p id="errorMsg" class="login-error" style="display: none">
+              Invalid email or password.
+            </p>
 
             <button type="submit" class="login-btn">
               Sign In <span>›</span>
@@ -173,6 +188,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="script.js" defer></script>
+    <script src="js/core.js" defer></script>
   </body>
 </html>
