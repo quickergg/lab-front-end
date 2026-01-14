@@ -1,14 +1,7 @@
 
-
-/* =========================================
-   CORE UTILITIES & GLOBAL BEHAVIOR
-========================================= */
-
 const $ = (id) => document.getElementById(id);
 
-/* -----------------------------------------
-   Header hide/show on scroll
------------------------------------------ */
+// header hide
 (() => {
   const header = document.querySelector("header");
   if (!header) return;
@@ -28,9 +21,7 @@ const $ = (id) => document.getElementById(id);
   });
 })();
 
-/* -----------------------------------------
-   Active nav link on scroll
------------------------------------------ */
+// active nav link on scrolling
 (() => {
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".nav-link");
@@ -58,9 +49,7 @@ const $ = (id) => document.getElementById(id);
   });
 })();
 
-/* -----------------------------------------
-   Session helpers
------------------------------------------ */
+// session helper
 function setWho() {
   const who = $("who");
   const email = sessionStorage.getItem("email");
@@ -135,9 +124,7 @@ function setupNewCancel(formId, onResetExtra) {
   });
 }
 
-/* =========================================
-   LOGIN PAGE
-========================================= */
+// login page
 (() => {
   const form = $("loginForm");
   if (!form) return;
@@ -170,9 +157,8 @@ function setupNewCancel(formId, onResetExtra) {
     window.location.href = user.page;
   });
 })();
-/* -----------------------------------------
-   Sidebar Tab Navigation
------------------------------------------ */
+
+// sidebar tab navigation
 function setupTabs() {
   const navItems = document.querySelectorAll(".navItem");
   const tabPanels = document.querySelectorAll(".tabPanel");
@@ -198,4 +184,5 @@ function setupTabs() {
     });
   });
 }
+
 
