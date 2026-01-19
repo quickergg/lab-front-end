@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,69 +12,144 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
   </head>
 
   <body class="dashboard-body">
+    <header class="header">
+      <div class="logo">
+        <button id="sidebar-toggle" class="sidebar-toggle">
+          <span class="icon">☰</span>
+        </button>
+        <img src="images/PUPLogo.png" alt="SmartLab Logo" />
+        <h2>smartlab.</h2>
+        <p>Office of the Department of Information</p>
+      </div>
+
+      <div class="logout-container">
+        <button id="logout-btn" class="logout-btn">Log out</button>
+      </div>
+    </header>
+
     <!-- ================= Main Content ================= -->
     <main class="adminShell">
       <!-- ================= Sidebar ================= -->
       <aside class="sidebar">
         <div class="sidebar-header">
           <div class="logo">
-            <img src="images/PUPLogo.png" alt="SmartLab Logo" />
-            <h2>smartlab.</h2>
+            <h2>Wazzap, Admin!</h2>
           </div>
         </div>
-
         <nav class="navList">
-          <button class="navItem active" data-tab="users">Manage Users</button>
+          <button class="navItem active" data-tab="dashboard">Dashboard</button>
+          <button class="navItem" data-tab="users">Manage Accounts</button>
           <button class="navItem" data-tab="schedule">Lab Schedule</button>
           <button class="navItem" data-tab="requests">Requests</button>
           <button class="navItem" data-tab="equipment">Equipments</button>
           <button class="navItem" data-tab="reports">Reports</button>
         </nav>
-
-        <div class="logout-container">
-          <!-- <a href="logout.php" class="logout-btn">Log out</a> -->
-          <button id="logout-btn" class="logout-btn">Log out</button>
-        </div>
       </aside>
+
       <section class="content">
-        <!-- Manage Users -->
-        <div class="card tabPanel" id="tab-users">
+        <!-- Dashboard / Overview -->
+        <div class="card tabPanel" id="tab-dashboard">
           <div class="cardHeader">
-            <h3>Manage Users Account</h3>
-            <button class="btn btn-primary">Add Account</button>
+            <h3>System Overview</h3>
+          </div>
+          <div class="analytics-grid">
+            <div class="stats-card">
+              <h4>Total Users</h4>
+              <p class="stats-number">124</p>
+            </div>
+            <div class="stats-card">
+              <h4>Active Schedules</h4>
+              <p class="stats-number">12</p>
+            </div>
+            <div class="stats-card">
+              <h4>Pending Requests</h4>
+              <p class="stats-number red-text">5</p>
+            </div>
+
+            <div class="stats-card">
+              <h4>Available Equipment</h4>
+              <p class="stats-number">48</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manage Users -->
+        <div class="card tabPanel hidden" id="tab-users">
+          <div class="cardHeader">
+            <h3>Manage Accounts</h3>
+            <div class="header-actions">
+              <div class="filter-group">
+                <select id="account-filter" class="filter-select">
+                  <option value="all">All Accounts</option>
+                  <option value="admin">Admin</option>
+                  <option value="faculty">Faculty</option>
+                  <option value="student">Student</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" id="open-add-modal">
+                Add Account
+              </button>
+            </div>
           </div>
 
-          <div class="tableWrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Role</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Token</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Faculty</td>
-                  <td>Juan Dela Cruz</td>
-                  <td>faculty@smartlab.com</td>
-                  <td><span class="pill">Active</span></td>
-                  <td>Active</td>
-                  <td>
-                    <button class="btn btnSmall">Edit</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div id="view-faculty" class="account-view">
+            <div class="tableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Token</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Faculty</td>
+                    <td>Juan Dela Cruz</td>
+                    <td>faculty@smartlab.com</td>
+                    <td><span class="pill">Active</span></td>
+                    <td>Active</td>
+                    <td><button class="btn btnSmall">Edit</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="view-students" class="account-view hidden">
+            <div class="tableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course & Year</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Student</td>
+                    <td>Maria Clara</td>
+                    <td>maria@student.com</td>
+                    <td><span class="pill">BSIT-3</span></td>
+                    <td>Active</td>
+                    <td><button class="btn btnSmall">Edit</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -82,7 +157,18 @@
         <div class="card tabPanel hidden" id="tab-schedule">
           <div class="cardHeader">
             <h3>Manage Lab Schedule</h3>
-            <button class="btn btn-primary">Add Schedule</button>
+            <div class="header-actions">
+              <div class="filter-group">
+                <label for="lab-filter" class="sr-only">Filter by Lab:</label>
+                <select id="lab-filter" class="filter-select">
+                  <option value="all">All Laboratories</option>
+                  <option value="1">Laboratory 1</option>
+                  <option value="2">Laboratory 2</option>
+                  <option value="3">Laboratory 3</option>
+                </select>
+              </div>
+              <button class="btn btn-primary">Add Schedule</button>
+            </div>
           </div>
 
           <div class="tableWrap">
@@ -90,20 +176,237 @@
               <thead>
                 <tr>
                   <th>Lab</th>
-                  <th>Date</th>
-                  <th>Time</th>
                   <th>Faculty</th>
-                  <th>Purpose</th>
-                  <th>Actions</th>
+                  <th>Section</th>
+                  <th>Year</th>
+                  <th>Day</th>
+                  <th>Time Start</th>
+                  <th>End</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Lab 1</td>
-                  <td>2025-12-20</td>
-                  <td>09:00 - 11:00</td>
-                  <td>Prof. Reyes</td>
-                  <td>Lecture</td>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>MONDAY</td>
+                  <td>8:00</td>
+                  <td>10:00</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>DIT</td>
+                  <td>1</td>
+                  <td>MONDAY</td>
+                  <td>10:00</td>
+                  <td>1:00</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>1</td>
+                  <td>MONDAY</td>
+                  <td>2:00</td>
+                  <td>4:30</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>V. Dungca</td>
+                  <td>BSIT</td>
+                  <td>4</td>
+                  <td>TUESDAY</td>
+                  <td>8:00</td>
+                  <td>11:30</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>2</td>
+                  <td>TUESDAY</td>
+                  <td>1:00</td>
+                  <td>4:00</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>4</td>
+                  <td>TUESDAY</td>
+                  <td>5:00</td>
+                  <td>8:30</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>WEDNESDAY</td>
+                  <td>8:30</td>
+                  <td>12:30</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>DIT</td>
+                  <td>2</td>
+                  <td>WEDNESDAY</td>
+                  <td>1:30</td>
+                  <td>4:00</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSIT</td>
+                  <td>4</td>
+                  <td>WEDNESDAY</td>
+                  <td>5:30</td>
+                  <td>8:30</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>THURSDAY</td>
+                  <td>7:30</td>
+                  <td>10:30</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>DIT</td>
+                  <td>1</td>
+                  <td>THURSDAY</td>
+                  <td>10:30</td>
+                  <td>1:30</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>1</td>
+                  <td>THURSDAY</td>
+                  <td>2:30</td>
+                  <td>5:00</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>M. Enteria</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>THURSDAY</td>
+                  <td>7:30</td>
+                  <td>9:00</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>M. Enteria</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>FRIDAY</td>
+                  <td>8:00</td>
+                  <td>1:00</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>2</td>
+                  <td>FRIDAY</td>
+                  <td>1:30</td>
+                  <td>4:30</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>SATURDAY</td>
+                  <td>8:00</td>
+                  <td>1:00</td>
+                  <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSIT</td>
+                  <td>2</td>
+                  <td>SATURDAY</td>
+                  <td>2:00</td>
+                  <td>8:00</td>
                   <td>
                     <button class="btn btnSmall">Edit</button>
                     <button class="btn btnSmall btnDanger">Delete</button>
@@ -135,12 +438,21 @@
                   <tbody>
                     <tr>
                       <td>faculty@smartlab.com</td>
-                      <td>Lab 1</td>
+                      <td>1</td>
                       <td>2025-12-21</td>
                       <td>13:00 - 15:00</td>
                       <td>
                         <button class="btn btnSmall btnPrimary">Approve</button>
-                        <button class="btn btnSmall btnDanger">Reject</button>
+                        <button
+                          class="btn btnSmall btnDanger btn-reject-trigger"
+                        >
+                          Reject
+                        </button>
+                        <div class="rejection-note hidden">
+                          <textarea
+                            placeholder="Reason for rejection..."
+                          ></textarea>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -252,6 +564,142 @@
         </div>
       </section>
     </main>
+
+    <!-- Modals -->
+    <!-- add account -->
+    <div id="modal-add-account" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="cardHeader">
+          <h3>Create New Account</h3>
+          <button class="close-modal">&times;</button>
+        </div>
+
+        <form id="add-account-form">
+          <div class="row">
+            <div class="full">
+              <label>Full Name</label>
+              <input type="text" placeholder="Enter complete name" required />
+            </div>
+
+            <div>
+              <label>Role</label>
+              <select id="role-select" required>
+                <option value="" disabled selected>Select Role</option>
+                <option value="faculty">Faculty</option>
+                <option value="student">Student</option>
+              </select>
+            </div>
+
+            <div>
+              <label>Email Address</label>
+              <input type="email" placeholder="email@smartlab.com" required />
+            </div>
+
+            <div id="student-extra-fields" class="full hidden">
+              <label>Course, Year & Section</label>
+              <select id="course-year-select">
+                <option value="" disabled selected>Select Course & Year</option>
+                <option value="BSIT-1">BSIT-1</option>
+                <option value="BSIT-2">BSIT-2</option>
+                <option value="BSIT-3">BSIT-3</option>
+                <option value="BSIT-4">BSIT-4</option>
+                <option value="DIT-1">DIT-1</option>
+                <option value="DIT-2">DIT-2</option>
+                <option value="DIT-3">DIT-3</option>
+                <option value="DIT-3">BSOA-2</option>
+                <option value="DIT-3">BSOA-4</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn-secondary" id="cancel-modal">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">Save Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- add aschedule -->
+    <div id="modal-add-schedule" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="cardHeader">
+          <h3 id="modal-title">Add New Lab Schedule</h3>
+          <button class="close-modal-sched">&times;</button>
+        </div>
+
+        <form id="add-schedule-form" data-mode="add">
+          <div class="row">
+            <div>
+              <label>Laboratory</label>
+              <select id="sched-lab" required>
+                <option value="1">Lab 1</option>
+                <option value="2">Lab 2</option>
+                <option value="3">Lab 3</option>
+              </select>
+            </div>
+            <div>
+              <label>Faculty Name</label>
+              <input
+                type="text"
+                id="sched-faculty"
+                placeholder="e.g. Prof. Reyes"
+                required
+              />
+            </div>
+            <div>
+              <label>Section</label>
+              <select id="sched-section" required>
+                <option value="BSIT">BSIT</option>
+                <option value="DIT">DIT</option>
+                <option value="BSOA">BSOA</option>
+              </select>
+            </div>
+            <div>
+              <label>Year</label>
+              <select id="sched-year" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            <div>
+              <label>Day</label>
+              <select id="sched-day" required>
+                <option value="MONDAY">MONDAY</option>
+                <option value="TUESDAY">TUESDAY</option>
+                <option value="WEDNESDAY">WEDNESDAY</option>
+                <option value="THURSDAY">THURSDAY</option>
+                <option value="FRIDAY">FRIDAY</option>
+                <option value="SATURDAY">SATURDAY</option>
+              </select>
+            </div>
+            <div class="split-row">
+              <div>
+                <label>Start Time</label>
+                <input type="time" id="sched-start" required />
+              </div>
+              <div>
+                <label>End Time</label>
+                <input type="time" id="sched-end" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn-secondary close-modal-sched">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="save-btn">
+              Save Schedule
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script src="js/core.js" defer></script>
     <script src="js/admin.js" defer></script>

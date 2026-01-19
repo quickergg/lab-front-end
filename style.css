@@ -173,7 +173,9 @@ nav a:hover {
   border-radius: 999px;
   font-size: 16px;
   font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .btn-primary:hover {
@@ -222,19 +224,20 @@ nav a:hover {
 
 /* Danger */
 .btnDanger {
-  background: var(--red-color);
-  color: var(--white-color);
+  /* background: var(--red-color); */
+  color: var(--red-color);
 }
 
 /* Hover effects */
 .btn:hover {
   transform: translateY(-1px);
-  color: var(--light-red-color);
+  background: #a80000;
+  color: var(--white-color);
 }
 
-.btnDanger:hover {
+/* .btnDanger:hover {
   background: #a80000;
-}
+} */
 
 /* help or feature section */
 
@@ -484,28 +487,182 @@ nav a:hover {
 /* admin panel */
 
 .adminShell {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 40px;
+  display: block; /* Removed grid */
   padding: 40px 80px;
-  align-items: start;
+  position: relative;
 }
 
-/* Sidebar */
+.adminShell.sidebar-collapsed {
+  grid-template-columns: 0fr 1fr;
+  gap: 0;
+}
+
+.adminShell.sidebar-collapsed .sidebar {
+  opacity: 0;
+  padding: 0;
+  border-width: 0;
+  margin: 0;
+  pointer-events: none; /* Prevents clicking links while hidden */
+}
+
+/* Sidebar Toggle Button Styling */
+.sidebar-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 15px;
+  color: inherit; /* Matches your header text color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-toggle:hover {
+  transform: translateY(-1px);
+  color: var(--light-red-color);
+}
+
+/* Sidebar Hidden State */
+.sidebar.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  margin-left: -20px; /* Adjust based on your layout's gap/padding */
+  opacity: 0;
+}
+
+/* Smooth Transition */
 .sidebar {
   position: sticky;
   top: 120px;
   background: var(--white-color);
   border: 2px solid var(--red-color);
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 30px 20px;
   height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  /* Add these for the animation */
+  transition: all 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap; /* Prevents text wrapping during animation */
 }
 
-.sidebar-header {
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  width: 280px;
+  height: calc(100vh - 120px);
+  z-index: 999;
+  background: var(--white-color);
+  border: 2px solid var(--red-color);
+  border-radius: 20px;
+  padding: 30px 20px;
+
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s;
+  transform: translateX(-350px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar.active {
+  transform: translateX(0); /* Slides into view */
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1); /* Adds depth over content */
+}
+
+/* Analytics Grid */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.stats-card {
+  padding: 20px;
+  border: 2px solid var(--dark-color);
+  border-radius: 12px;
+  text-align: center;
+}
+.stats-number {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--red-color);
+}
+
+/* Modal Styling */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Dark semi-transparent bg */
+  z-index: 2000;
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.flex-display {
+  display: flex;
+}
+
+.modal-card {
+  background: var(--white-color);
+  width: 100%;
+  max-width: 550px;
+  padding: 40px;
+  border-radius: 20px;
+  border: 2px solid var(--red-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease-out;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--red-color);
+  cursor: pointer;
+}
+
+.btn-secondary {
+  border-color: var(--dark-color);
+  color: var(--dark-color);
+  margin-right: 10px;
+}
+
+.modal-content {
+  width: 500px;
+  border-radius: 15px;
+}
+.hidden {
+  display: none !important;
+}
+
+/* .sidebar-header {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -525,7 +682,7 @@ nav a:hover {
   margin-bottom: 20px;
   border-bottom: 2px solid var(--dark-color);
   padding-bottom: 10px;
-}
+} */
 
 .navList {
   display: flex;
@@ -565,33 +722,38 @@ nav a:hover {
   font-size: 16px;
   font-weight: 600;
   text-align: center;
-  margin-top: 40px;
+  /* margin-top: px; */
 }
 
 /* Content */
 .content {
-  min-width: 0;
+  width: 100%;
+  transition: opacity 0.3s ease; /* Optional: dim content when sidebar is out */
 }
-
 /* Cards */
 .card {
   background: var(--white-color);
   border: 2px solid var(--dark-color);
-  padding: 32px;
+  padding: 30px;
   margin-bottom: 32px;
+  border-radius: 8px;
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 20px;
+  margin-bottom: 24px;
 }
 
 .cardHeader h3 {
   color: var(--red-color);
   font-size: 22px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Tabs */
@@ -604,6 +766,16 @@ nav a:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
+}
+
+#add-schedule-form .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+#add-schedule-form .row > div {
+  flex: 1 1 200px; /* Allows inputs to wrap if the screen is small */
 }
 
 .innerCard {
@@ -709,7 +881,170 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:hover {
-  background: var(--light-red-color);
+  background-color: rgba(193, 3, 5, 0.05); /* Very light red tint */
+  cursor: default;
+}
+
+.rejection-note {
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+.rejection-note textarea {
+  width: 100%;
+  height: 60px;
+  padding: 8px;
+  border: 2px solid var(--red-color);
+  border-radius: 8px;
+  font-size: 12px;
+  background: #fff;
+  resize: none;
+}
+
+/* Header Layout */
+.header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Space between the dropdown and the button */
+}
+
+.filter-select {
+  padding: 10px 16px;
+  border: 2px solid var(--dark-color);
+  border-radius: 10px;
+  background-color: var(--white-color);
+  color: var(--dark-color);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-select:hover {
+  border-color: var(--red-color);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--red-color);
+  box-shadow: 0 0 0 3px rgba(193, 3, 5, 0.1);
+}
+
+/* Helper to hide label but keep it for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Sub-tabs Styling */
+.sub-tabs {
+  display: flex;
+  gap: 5px;
+  background: #eee;
+  padding: 5px;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.sub-tab {
+  padding: 6px 15px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--dark-color);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.sub-tab.active {
+  background: var(--red-color);
+  color: white;
+}
+
+/* Ensure hidden views don't take space */
+.account-view.hidden {
+  display: none !important;
+}
+
+/* Center the Lab Number column */
+#tab-schedule table td:first-child,
+#tab-schedule table th:first-child {
+  text-align: center;
+  width: 80px; /* Optional: keeps the column narrow */
+}
+
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: "Poppins", sans-serif; /* Matches your body font */
+  font-size: 14px;
+  color: var(--dark-color);
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+  resize: vertical; /* Allows height adjustment only */
+  outline: none;
+}
+
+textarea:focus {
+  border-color: var(--red-color); /* Matches your theme color */
+  box-shadow: 0 0 5px rgba(193, 3, 5, 0.1);
+}
+
+textarea::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Perfect Checkbox Alignment */
+.checkgrid label {
+  display: flex;
+  align-items: center; /* Vertically centers checkbox with text */
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px 0;
+}
+
+.checkgrid input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0; /* Removes default browser margins that cause offset */
+}
+
+/* Time Split Layout */
+.split-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Ensure select boxes match input styling */
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  font-family: inherit;
 }
 
 /* responsive */
@@ -729,14 +1064,36 @@ tbody tr:hover {
 
   .bottom-cards {
     grid-template-columns: 1fr;
-  }
 
-  .about-container {
-    grid-template-columns: 1fr;
-    gap: 40px;
+    .about-container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
   }
 
   .about {
     padding: 80px 32px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
