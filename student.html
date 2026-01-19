@@ -3,12 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SmartLab | Laboratory Management System</title>
-
-    <!-- Styles -->
+    <title>SmartLab | Student Panel</title>
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,178 +13,394 @@
       rel="stylesheet"
     />
   </head>
-  <body>
-    <!-- Header / Navigation -->
+
+  <body class="dashboard-body">
     <header class="header">
       <div class="logo">
+        <button id="sidebar-toggle" class="sidebar-toggle">
+          <span class="icon">☰</span>
+        </button>
         <img src="images/PUPLogo.png" alt="SmartLab Logo" />
         <h2>smartlab.</h2>
-        <!-- logo image -->
+        <p>Office of the Department of Information</p>
       </div>
 
-      <nav class="navigation">
-        <ul>
-          <li><a href="#home" class="nav-link">Home</a></li>
-          <li><a href="#features" class="nav-link">Features</a></li>
-          <li><a href="#about" class="nav-link">About</a></li>
-          <li class="separator">|</li>
-          <li><a href="#login" class="nav-link">Login</a></li>
-        </ul>
-      </nav>
+      <div class="logout-container">
+        <button id="logout-btn" class="logout-btn">Log out</button>
+      </div>
     </header>
 
-    <!-- Intro Section -->
-    <main>
-      <section class="intro-section" id="home">
-        <h1>
-          A Smart Solution for
-          <span class="highlight">Laboratory <br />Equipment Borrowing</span>
-          and
-          <span class="highlight">Scheduling</span>
-        </h1>
-        <p>
-          Efficiently manage laboratory equipment, room reservations, and
-          schedules through a centralized and secure system.
-        </p>
-        <a href="#login" class="btn-primary"> Get Started <span>↗</span> </a>
-      </section>
-
-      <div class="star1-bg">
-        <img src="images/Star.svg" alt="Blur Star Background" />
-      </div>
-
-      <!-- Features / Help Section -->
-      <section class="help-section" id="features">
-        <div class="top-card">
-          <h2>
-            Designed to Help you <br />
-            Do
-            <span class="highlight"
-              >Simplify <br />
-              Request</span
-            >
-          </h2>
-          <p>
-            Removes unnecessary steps by letting you submit, track, and manage
-            laboratory requests through a clean and user-friendly interface.
-          </p>
-        </div>
-
-        <div class="bottom-cards">
-          <article class="feature-card">
-            <h3>
-              Secure User <br />
-              Authentication
-            </h3>
-            <p>
-              Ensures controlled access so only authorized students, faculty,
-              and administrators can use the platform.
-            </p>
-          </article>
-
-          <article class="feature-card">
-            <h3>Room Scheduling and Conflict Detection</h3>
-            <p>
-              Automatically checks availability to prevent overlapping
-              reservations and ensure fair laboratory usage.
-            </p>
-          </article>
-
-          <article class="feature-card">
-            <h3>Reports Generation and Data Export</h3>
-            <p>
-              Generate organized records that can be reviewed or exported to
-              support monitoring, audits, and documentation.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <div class="star-bg">
-        <img src="images/Star.svg" alt="Blur Star Background" />
-      </div>
-
-      <!-- About Section -->
-      <section class="about-section" id="about">
-        <div class="about-container">
-          <h2>ABOUT<br />SMARTLAB</h2>
-
-          <div class="about-text">
-            <p>
-              SmartLab is your all-in-one solution for managing laboratory
-              operations with ease and confidence. Designed to simplify
-              equipment borrowing and room scheduling, SmartLab lets users
-              submit requests online while the system instantly checks
-              availability and detects scheduling conflicts. Every request is
-              clearly reviewed and approved by administrators, ensuring an
-              organized and reliable process from start to finish.
-            </p>
-
-            <p>
-              Say goodbye to overlapping schedules, misplaced equipment, and
-              time-consuming manual checks. With automated schedule validation
-              and real-time inventory monitoring, SmartLab helps laboratories
-              run smoothly, efficiently, and fairly. Built-in reporting and
-              export tools make it easy for administrators to track usage, plan
-              resources, and maintain accurate records all in just a few clicks.
-            </p>
-
-            <p>
-              Whether you’re a student reserving equipment, a faculty member
-              scheduling a lab session, or an administrator overseeing
-              operations, SmartLab gives you a smarter, faster, and more
-              dependable way to manage your laboratory.
-            </p>
+    <main class="adminShell">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <h2>Hi, Students!</h2>
           </div>
         </div>
-      </section>
 
-      <!-- login sectiion -->
-      <section class="login-section" id="login">
-        <div class="login-card">
-          <h2>Log In</h2>
-          <p class="login-subtext">
-            Enter your email and password below to log in.
+        <nav class="navList">
+          <button class="navItem active" data-tab="request">Borrow</button>
+          <button class="navItem" data-tab="view-requests">My Requests</button>
+          <button class="navItem" data-tab="schedule">Schedule</button>
+        </nav>
+      </aside>
+
+      <section class="content">
+        <div class="card tabPanel" id="tab-request">
+          <div class="cardHeader">
+            <h3>Item Borrowing Request Form</h3>
+          </div>
+
+          <p class="note">
+            <strong>Note:</strong> Equipment requests must be filed at least
+            three (3) working days before the date needed.
           </p>
 
-          <form id="loginForm">
-            <label>Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="mail@domain.com"
-              required
-            />
+          <form id="studentRequestForm" class="row">
+            <div class="full">
+              <label>Item/s to Borrow</label>
+              <div class="checkgrid">
+                <label
+                  ><input
+                    type="checkbox"
+                    name="particulars"
+                    value="LCD/LED TV"
+                  />
+                  LCD/LED TV</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="particulars"
+                    value="VGA/HDMI port"
+                  />
+                  VGA/HDMI port</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="particulars"
+                    value="Extension Cords"
+                  />
+                  Extension Cords</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="particulars"
+                    value="Projectors"
+                  />
+                  Projectors</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="particulars"
+                    value="Crimping tool"
+                  />
+                  Crimping tool</label
+                >
+              </div>
+            </div>
 
-            <label>Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter password"
-              required
-            />
+            <div>
+              <label>Faculty In-Charge</label>
+              <input type="text" name="facultyInCharge" required />
+            </div>
+            <div>
+              <label>Subject / Purpose of Use</label>
+              <input type="text" name="subject" required />
+            </div>
+            <div>
+              <label>Course, Year & Section</label>
+              <select
+                name="courseYearSection"
+                id="student-course-select"
+                required
+              >
+                <option value="" disabled selected>Select Course & Year</option>
+                <option value="BSIT-1">BSIT-1</option>
+                <option value="BSIT-2">BSIT-2</option>
+                <option value="BSIT-3">BSIT-3</option>
+                <option value="BSIT-4">BSIT-4</option>
+                <option value="DIT-1">DIT-1</option>
+                <option value="DIT-2">DIT-2</option>
+                <option value="DIT-3">DIT-3</option>
+                <option value="BSOA-2">BSOA-2</option>
+                <option value="BSOA-4">BSOA-4</option>
+              </select>
+            </div>
 
-            <p id="errorMsg" class="login-error" style="display: none">
-              Invalid email or password.
-            </p>
+            <div>
+              <label>Date of Use</label>
+              <input type="date" name="dateOfUse" required />
+            </div>
 
-            <button type="submit" class="login-btn">
-              Sign In <span>›</span>
-            </button>
+            <div class="split-row">
+              <div>
+                <label>Time Start</label>
+                <input type="time" name="timeStart" required />
+              </div>
+              <div>
+                <label>Time End</label>
+                <input type="time" name="timeEnd" required />
+              </div>
+            </div>
+
+            <div class="full">
+              <label>Contact Details (Mobile/Email)</label>
+              <input type="text" name="contactDetails" required />
+            </div>
+
+            <div class="full">
+              <label for="purpose">Specific Purpose</label>
+              <textarea
+                name="purpose"
+                id="purpose"
+                placeholder="Briefly explain why you are borrowing these items..."
+                required
+                rows="4"
+              ></textarea>
+            </div>
+
+            <div class="actions full">
+              <button type="button" class="btn" id="newRequestBtn">
+                New Request
+              </button>
+              <button type="button" class="btn btnDanger" id="cancelBtn">
+                Cancel
+              </button>
+              <button type="submit" class="btn btnPrimary">
+                Submit Borrow Request
+              </button>
+            </div>
           </form>
+        </div>
+
+        <div class="card tabPanel hidden" id="tab-schedule">
+          <div class="cardHeader">
+            <h3>Laboratory Schedule Overview</h3>
+
+            <div class="header-actions">
+              <div class="filter-group">
+                <label for="lab-filter" class="sr-only"> Filter by Lab: </label>
+                <select id="lab-filter" class="filter-select">
+                  <option value="all">All Laboratories</option>
+                  <option value="1">Laboratory 1</option>
+                  <option value="2">Laboratory 2</option>
+                  <option value="3">Laboratory 3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="tableWrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Lab</th>
+                  <th>Faculty</th>
+                  <th>Section</th>
+                  <th>Year</th>
+                  <th>Day</th>
+                  <th>Time Start</th>
+                  <th>End</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>MONDAY</td>
+                  <td>8:00</td>
+                  <td>10:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>DIT</td>
+                  <td>1</td>
+                  <td>MONDAY</td>
+                  <td>10:00</td>
+                  <td>1:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>1</td>
+                  <td>MONDAY</td>
+                  <td>2:00</td>
+                  <td>4:30</td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>V. Dungca</td>
+                  <td>BSIT</td>
+                  <td>4</td>
+                  <td>TUESDAY</td>
+                  <td>8:00</td>
+                  <td>11:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>2</td>
+                  <td>TUESDAY</td>
+                  <td>1:00</td>
+                  <td>4:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>4</td>
+                  <td>TUESDAY</td>
+                  <td>5:00</td>
+                  <td>8:30</td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>WEDNESDAY</td>
+                  <td>8:30</td>
+                  <td>12:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>DIT</td>
+                  <td>2</td>
+                  <td>WEDNESDAY</td>
+                  <td>1:30</td>
+                  <td>4:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSIT</td>
+                  <td>4</td>
+                  <td>WEDNESDAY</td>
+                  <td>5:30</td>
+                  <td>8:30</td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>THURSDAY</td>
+                  <td>7:30</td>
+                  <td>10:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>DIT</td>
+                  <td>1</td>
+                  <td>THURSDAY</td>
+                  <td>10:30</td>
+                  <td>1:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>1</td>
+                  <td>THURSDAY</td>
+                  <td>2:30</td>
+                  <td>5:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>M. Enteria</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>THURSDAY</td>
+                  <td>7:30</td>
+                  <td>9:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>M. Enteria</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>FRIDAY</td>
+                  <td>8:00</td>
+                  <td>1:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>2</td>
+                  <td>FRIDAY</td>
+                  <td>1:30</td>
+                  <td>4:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>SATURDAY</td>
+                  <td>8:00</td>
+                  <td>1:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSIT</td>
+                  <td>2</td>
+                  <td>SATURDAY</td>
+                  <td>2:00</td>
+                  <td>8:00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card tabPanel hidden" id="tab-view-requests">
+          <div class="cardHeader">
+            <h3>My Request</h3>
+          </div>
+
+          <div class="tableWrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date Filed</th>
+                  <th>Items Borrowed</th>
+                  <th>Usage Date</th>
+                  <th>Schedule</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="studentRequestsBody">
+                <tr>
+                  <td>2026-01-19</td>
+                  <td>Projector, HDMI Cable</td>
+                  <td>2026-01-22</td>
+                  <td>1:00 PM - 3:00 PM</td>
+                  <td><span class="pill status-pending">Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <h3>smartlab.</h3>
-      <p>Laboratory Equipment Borrowing and Scheduling System</p>
-      <p>Institute of Brilliant Information Technology Student</p>
-      <span>© 2025 SmartLab</span>
-    </footer>
-
-    <!-- Scripts -->
     <script src="js/core.js" defer></script>
+    <script src="js/student.js" defer></script>
   </body>
 </html>
