@@ -1,314 +1,330 @@
-
-
-/* =========================================
-   CORE UTILITIES & GLOBAL BEHAVIOR
-========================================= */
-
-const $ = (id) => document.getElementById(id);
-
-/* -----------------------------------------
-   Header hide/show on scroll
------------------------------------------ */
 (() => {
-  const header = document.querySelector("header");
-  if (!header) return;
+  // 1. Global Initialization (Runs on every page load)
+  guardRole("Admin");    // Ensures only Admins can stay on this page [cite: 9]
+  setWho();              // Displays the user's email [cite: 5, 6]
+  logoutSetup();         // Sets up the log out button [cite: 7]
+  setupTabs();           // THIS FIXES THE NAVIGATION: Initializes sidebar switching 
 
-  let lastScrollTop = 0;
+  // 2. Admin-Specific Logic
+  console.log("Admin panel initialized.");
 
-  window.addEventListener("scroll", () => {
-    const current = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (current > lastScrollTop && current > 100) {
-      header.classList.add("hide");
-    } else {
-      header.classList.remove("hide");
-    }
-
-    lastScrollTop = current <= 0 ? 0 : current;
-  });
-})();
-
-/* -----------------------------------------
-   Active nav link on scroll
------------------------------------------ */
-(() => {
-  const sections = document.querySelectorAll("section");
-  const navLinks = document.querySelectorAll(".nav-link");
-
-  if (!sections.length || !navLinks.length) return;
-
-  window.addEventListener("scroll", () => {
-    let current = "";
-
-    sections.forEach((section) => {
-      const top = section.offsetTop - 120;
-      const height = section.offsetHeight;
-
-      if (pageYOffset >= top && pageYOffset < top + height) {
-        current = section.id;
-      }
+  // Example: Add Account Button logic
+  const addAccountBtn = document.querySelector(".cardHeader .btn-primary");
+  if (addAccountBtn) {
+    addAccountBtn.addEventListener("click", () => {
+      alert("Add Account modal/form would open here.");
     });
-
-    navLinks.forEach((link) => {
-      link.classList.toggle(
-        "active",
-        link.getAttribute("href") === `#${current}`
-      );
-    });
-  });
-})();
-
-/* -----------------------------------------
-   Session helpers
------------------------------------------ */
-function setWho() {
-  const who = $("who");
-  const email = sessionStorage.getItem("email");
-  if (who && email) who.textContent = `(${email})`;
-}
-
-function logoutSetup() {
-  const btn = $("logout-btn");
-  if (!btn) return;
-
-  btn.addEventListener("click", () => {
-    sessionStorage.clear();
-    window.location.href = "index.html";
-  });
-}
-
-function guardRole(role) {
-  if (sessionStorage.getItem("role") !== role) {
-    window.location.href = "index.html";
   }
-}
 
-/* -----------------------------------------
-   Form helpers
------------------------------------------ */
-function setupOthersToggle(chkId, txtId) {
-  const chk = $(chkId);
-  const txt = $(txtId);
-  if (!chk || !txt) return;
-
-  const update = () => {
-    txt.disabled = !chk.checked;
-    if (!chk.checked) txt.value = "";
-  };
-
-  chk.addEventListener("change", update);
-  update();
-}
-
-function setupPurposeOthers(radioId, txtId) {
-  const radio = $(radioId);
-  const txt = $(txtId);
-  if (!radio || !txt) return;
-
-  const update = () => {
-    txt.disabled = !radio.checked;
-    if (!radio.checked) txt.value = "";
-  };
-
-  document
-    .querySelectorAll('input[name="purpose"]')
-    .forEach((r) => r.addEventListener("change", update));
-
-  update();
-}
-
-function setupNewCancel(formId, onResetExtra) {
-  const form = $(formId);
-  if (!form) return;
-
-  const reset = () => {
-    form.reset();
-    onResetExtra?.();
-  };
-
-  $("newRequestBtn")?.addEventListener("click", () => {
-    if (confirm("Start a new request?")) reset();
-  });
-
-  $("cancelBtn")?.addEventListener("click", () => {
-    if (confirm("Cancel this request?")) reset();
-  });
-}
-
-/* =========================================
-   LOGIN PAGE
-========================================= */
-(() => {
-  const form = $("loginForm");
-  if (!form) return;
-
-  const accounts = [
-    { role: "Student", email: "student@smartlab.com", password: "student123", page: "student.html" },
-    { role: "Faculty", email: "faculty@smartlab.com", password: "faculty123", page: "faculty.html" },
-    { role: "Admin",   email: "admin@smartlab.com",   password: "admin123",   page: "admin.html" }
-  ];
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const email = $("email").value.trim().toLowerCase();
-    const password = $("password").value;
-    const err = $("errorMsg");
-
-    const user = accounts.find(
-      (a) => a.email === email && a.password === password
-    );
-
-    if (!user) {
-      err && (err.style.display = "block");
-      return;
-    }
-
-    err && (err.style.display = "none");
-    sessionStorage.setItem("role", user.role);
-    sessionStorage.setItem("email", user.email);
-    window.location.href = user.page;
-  });
+  // If you later add a specific form to admin.html, put its logic here:
+  const adminForm = $("someAdminFormId");
+  if (adminForm) {
+    adminForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      // form handling...
+    });
+  }
 })();
-/* -----------------------------------------
-   Sidebar Tab Navigation
------------------------------------------ */
-function setupTabs() {
-  const navItems = document.querySelectorAll(".navItem");
-  const tabPanels = document.querySelectorAll(".tabPanel");
 
-  if (!navItems.length) return;
 
-  navItems.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const target = btn.getAttribute("data-tab");
+// Toggle Student Fields in Modal
+document.addEventListener('DOMContentLoaded', () => {
+    // Select elements
+    const addAccountBtn = document.querySelector('#tab-users .btn-primary'); // Targets the button in Manage Users
+    const modal = document.getElementById('modal-add-account');
+    const closeModal = document.querySelector('.close-modal');
+    const cancelModal = document.getElementById('cancel-modal');
+    const roleSelect = document.getElementById('role-select');
+    const studentFields = document.getElementById('student-extra-fields');
+    const subTabs = document.querySelectorAll('.sub-tab');
+    const accountViews = document.querySelectorAll('.account-view');
+    const accountFilter = document.getElementById('account-filter');
+    const facultyView = document.getElementById('view-faculty');
+    const studentView = document.getElementById('view-students');
+    const schedModal = document.getElementById('modal-add-schedule');
+    const openSchedBtn = document.querySelector('#tab-schedule .btn-primary'); // The "Add Schedule" button
+    const closeSchedBtns = document.querySelectorAll('.close-modal-sched');
+    const schedForm = document.getElementById('add-schedule-form');
+    const scheduleTableBody = document.querySelector('#tab-schedule tbody');
 
-      // Update active button
-      navItems.forEach((item) => item.classList.remove("active"));
-      btn.classList.add("active");
+    // for modal (add lab schedule)
+if(openSchedBtn) {
+        openSchedBtn.addEventListener('click', () => {
+            schedModal.classList.remove('hidden');
+            schedModal.classList.add('flex-display');
+        });
+    }
 
-      // Show/Hide panels
-      tabPanels.forEach((panel) => {
-        if (panel.id === `tab-${target}`) {
-          panel.classList.remove("hidden");
-        } else {
-          panel.classList.add("hidden");
-        }
-      });
+    // 2. Close Modal
+    closeSchedBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            schedModal.classList.add('hidden');
+            schedModal.classList.remove('flex-display');
+            schedForm.reset();
+        });
     });
-  });
+
+    // 3. Handle Form Submission
+    schedForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Capture Form Values
+        const lab = document.getElementById('sched-lab').value;
+        const faculty = document.getElementById('sched-faculty').value;
+        const section = document.getElementById('sched-section').value;
+        const year = document.getElementById('sched-year').value;
+        const day = document.getElementById('sched-day').value;
+        const start = document.getElementById('sched-start').value;
+        const end = document.getElementById('sched-end').value;
+
+        // Create the new row HTML
+        const newRow = `
+            <tr>
+                <td>${lab}</td>
+                <td>${faculty}</td>
+                <td>${section}</td>
+                <td>${year}</td>
+                <td>${day}</td>
+                <td>${start}</td>
+                <td>${end}</td>
+                <td>
+                    <button class="btn btnSmall">Edit</button>
+                    <button class="btn btnSmall btnDanger">Delete</button>
+                </td>
+            </tr>
+        `;
+
+        // Append to table
+        scheduleTableBody.insertAdjacentHTML('beforeend', newRow);
+
+        // UI Feedback & Cleanup
+        alert('Schedule added successfully!');
+        schedModal.classList.add('hidden');
+        schedModal.classList.remove('flex-display');
+        schedForm.reset();
+        
+        // Refresh the Dashboard analytics numbers
+        if(typeof updateDashboardCounts === "function") updateDashboardCounts();
+    });
+
+    // Account filtering logic
+    if (accountFilter) {
+        accountFilter.addEventListener('change', (e) => {
+            const selected = e.target.value;
+
+            if (selected === 'Student' ) {
+                facultyView.classList.add('hidden');
+                studentView.classList.remove('hidden');
+            } else if (selected === 'Faculty') {
+                studentView.classList.add('hidden');
+                facultyView.classList.remove('hidden');
+            } else if (selected === 'All') {
+                // Show both tables or a unified view
+                facultyView.classList.remove('hidden');
+                studentView.classList.remove('hidden');
+            }
+            // Note: You can add logic for 'admin' here if you create an Admin table
+        });
+    }
+
+    // 1. Open Modal
+    addAccountBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex-display'); // We use flex to center the card
+    });
+
+    // 2. Close Modal (X button or Cancel)
+    const hideModal = () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex-display');
+        document.getElementById('add-account-form').reset(); // Clear form on close
+        studentFields.classList.add('hidden'); // Hide student fields for next time
+    };
+
+    closeModal.addEventListener('click', hideModal);
+    cancelModal.addEventListener('click', hideModal);
+
+    // 3. Toggle Student Fields based on Role
+    roleSelect.addEventListener('change', (e) => {
+        if (e.target.value === 'student') {
+            studentFields.classList.remove('hidden');
+            document.getElementById('course-year-select').setAttribute('required', 'true');
+        } else {
+            studentFields.classList.add('hidden');
+            document.getElementById('course-year-select').removeAttribute('required');
+        }
+    });
+
+    // Close on clicking outside the card
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) hideModal();
+    });
+
+    subTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // 1. Remove active class from all tabs
+            subTabs.forEach(t => t.classList.remove('active'));
+            // 2. Add active class to clicked tab
+            tab.classList.add('active');
+
+            // 3. Hide all views
+            accountViews.forEach(view => view.classList.add('hidden'));
+            // 4. Show the target view
+            const targetId = tab.getAttribute('data-target');
+            document.getElementById(targetId).classList.remove('hidden');
+        });
+    });
+
+    // Update your Analytics count to look into both tables now
+    updateDashboardCounts();
+
+});
+
+function updateDashboardCounts() {
+    // 1. Count Total Users (Faculty + Students)
+    const facultyCount = document.querySelectorAll('#view-faculty tbody tr').length;
+    const studentCount = document.querySelectorAll('#view-students tbody tr').length;
+    const totalUsers = facultyCount + studentCount;
+
+    // 2. Count Active Schedules
+    const scheduleCount = document.querySelectorAll('#tab-schedule tbody tr').length;
+
+    // 3. Count Pending Requests (Room + Equipment)
+    const roomReqCount = document.querySelectorAll('#tab-requests .innerCard:first-child tbody tr').length;
+    const equipReqCount = document.querySelectorAll('#tab-requests .innerCard:last-child tbody tr').length;
+    const totalRequests = roomReqCount + equipReqCount;
+
+    // 4. Update the Dashboard Display
+    // We target the stats-number by their index or specific ID
+    const statsNumbers = document.querySelectorAll('.stats-number');    
+    if (statsNumbers.length >= 3) {
+        statsNumbers[0].innerText = totalUsers;
+        statsNumbers[1].innerText = scheduleCount;
+        statsNumbers[2].innerText = totalRequests;
+    }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.sidebar');
+// Call this function when the page loads
+// document.addEventListener('DOMContentLoaded', updateDashboardCounts);
 
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevents click from bubbling up
-            sidebar.classList.toggle('active');
-        });
+// const labFilter = document.getElementById('lab-filter');
+// const scheduleTableRows = document.querySelectorAll('#tab-schedule tbody tr');
 
-        // Optional: Close sidebar if user clicks outside of it
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-            }
-        });
-    }
-});
+// if (labFilter) {
+//     labFilter.addEventListener('change', (e) => {
+//         const selectedLab = e.target.value; // Will be "1", "2", "3", or "all"
 
-/**
- * SmartLab Core - Shared Functions
- */
-
-const SmartLab = {
-    // 1. SHARED TAB SWITCHING
-    // Automatically handles any button with .navItem and any panel with .tabPanel
-    initTabs: function() {
-        const navItems = document.querySelectorAll('.navItem');
-        const tabPanels = document.querySelectorAll('.tabPanel');
-
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const target = item.getAttribute('data-tab');
-                
-                // Update Buttons
-                navItems.forEach(btn => btn.classList.remove('active'));
-                item.classList.add('active');
-
-                // Update Panels
-                tabPanels.forEach(panel => panel.classList.add('hidden'));
-                const targetPanel = document.getElementById(`tab-${target}`);
-                if (targetPanel) targetPanel.classList.remove('hidden');
-            });
-        });
-    },
-
-    // 2. UNIVERSAL TABLE FILTER
-    // @param selectId: The ID of the dropdown
-    // @param tableId: The ID of the table or tbody to filter
-    // @param colIndex: Which column index to check (0, 1, 2...)
-    initTableFilter: function(selectId, tableId, colIndex) {
-        const filterSelect = document.getElementById(selectId);
-        const table = document.getElementById(tableId);
-        
-        if (!filterSelect || !table) return;
-
-        filterSelect.addEventListener('change', (e) => {
-            const filterValue = e.target.value.toLowerCase();
-            const rows = table.querySelectorAll('tbody tr');
-
-            rows.forEach(row => {
-                const cellText = row.cells[colIndex].innerText.toLowerCase();
-                
-                // If "all" is selected or the text matches the filter
-                if (filterValue === 'all' || cellText.includes(filterValue)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        });
-    },
-
-    // 3. MODAL HANDLER
-    toggleModal: function(modalId, show = true) {
-        const modal = document.getElementById(modalId);
-        if (!modal) return;
-        
-        if (show) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex-display');
-        } else {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex-display');
-        }
-    }
-};
-
-// Auto-initialize tabs on every page that has core.js
-document.addEventListener('DOMContentLoaded', () => {
-    SmartLab.initTabs();
-});
-
-// laboratory filter for faculty schedule
-const labFilter = document.getElementById('lab-filter');
-const scheduleTableRows = document.querySelectorAll('#tab-schedule tbody tr');
-
-if (labFilter) {
-    labFilter.addEventListener('change', (e) => {
-        const selectedLab = e.target.value; // Will be "1", "2", "3", or "all"
-
-        scheduleTableRows.forEach(row => {
-            // Get the text from the first column and remove any extra spaces
-            const cellValue = row.cells[0].innerText.trim(); 
+//         scheduleTableRows.forEach(row => {
+//             // Get the text from the first column and remove any extra spaces
+//             const cellValue = row.cells[0].innerText.trim(); 
             
-            if (selectedLab === 'all' || cellValue === selectedLab) {
-                row.style.display = ''; 
-            } else {
-                row.style.display = 'none'; 
+//             if (selectedLab === 'all' || cellValue === selectedLab) {
+//                 row.style.display = ''; 
+//             } else {
+//                 row.style.display = 'none'; 
+//             }
+//         });
+//     });
+// }
+
+let currentRow = null; // Stores the row being edited
+
+document.addEventListener('DOMContentLoaded', () => {
+    const schedModal = document.getElementById('modal-add-schedule');
+    const schedForm = document.getElementById('add-schedule-form');
+    const modalTitle = document.getElementById('modal-title');
+    const saveBtn = document.getElementById('save-btn');
+    const scheduleTableBody = document.querySelector('#tab-schedule tbody');
+
+    // --- 1. DELETE & EDIT TRIGGER (Event Delegation) ---
+    scheduleTableBody.addEventListener('click', (e) => {
+        const row = e.target.closest('tr');
+        
+        // Handle Delete
+        if (e.target.classList.contains('btnDanger')) {
+            if (confirm("Are you sure you want to delete this schedule?")) {
+                row.remove();
+                updateDashboardCounts();
             }
-        });
+        }
+
+        // Handle Edit
+        if (e.target.innerText === 'Edit') {
+            currentRow = row;
+            schedForm.setAttribute('data-mode', 'edit');
+            modalTitle.innerText = "Edit Lab Schedule";
+            saveBtn.innerText = "Update Schedule";
+
+            // Fill form with current row data
+            document.getElementById('sched-lab').value = row.cells[0].innerText;
+            document.getElementById('sched-faculty').value = row.cells[1].innerText;
+            document.getElementById('sched-section').value = row.cells[2].innerText;
+            document.getElementById('sched-year').value = row.cells[3].innerText;
+            document.getElementById('sched-day').value = row.cells[4].innerText;
+            document.getElementById('sched-start').value = row.cells[5].innerText;
+            document.getElementById('sched-end').value = row.cells[6].innerText;
+
+            schedModal.classList.remove('hidden');
+            schedModal.classList.add('flex-display');
+        }
     });
-}
+
+    // --- 2. SAVE/UPDATE LOGIC ---
+    schedForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const data = {
+            lab: document.getElementById('sched-lab').value,
+            faculty: document.getElementById('sched-faculty').value,
+            section: document.getElementById('sched-section').value,
+            year: document.getElementById('sched-year').value,
+            day: document.getElementById('sched-day').value,
+            start: document.getElementById('sched-start').value,
+            end: document.getElementById('sched-end').value
+        };
+
+        if (schedForm.getAttribute('data-mode') === 'edit' && currentRow) {
+            // UPDATE EXISTING ROW
+            currentRow.cells[0].innerText = data.lab;
+            currentRow.cells[1].innerText = data.faculty;
+            currentRow.cells[2].innerText = data.section;
+            currentRow.cells[3].innerText = data.year;
+            currentRow.cells[4].innerText = data.day;
+            currentRow.cells[5].innerText = data.start;
+            currentRow.cells[6].innerText = data.end;
+            alert('Schedule updated!');
+        } else {
+            // ADD NEW ROW
+            const newRowHtml = `
+                <tr>
+                    <td>${data.lab}</td><td>${data.faculty}</td><td>${data.section}</td>
+                    <td>${data.year}</td><td>${data.day}</td><td>${data.start}</td>
+                    <td>${data.end}</td>
+                    <td>
+                        <button class="btn btnSmall">Edit</button>
+                        <button class="btn btnSmall btnDanger">Delete</button>
+                    </td>
+                </tr>`;
+            scheduleTableBody.insertAdjacentHTML('beforeend', newRowHtml);
+        }
+
+        // Reset and Close
+        closeModal();
+        updateDashboardCounts();
+    });
+
+    function closeModal() {
+        schedModal.classList.add('hidden');
+        schedModal.classList.remove('flex-display');
+        schedForm.reset();
+        schedForm.setAttribute('data-mode', 'add');
+        modalTitle.innerText = "Add New Lab Schedule";
+        saveBtn.innerText = "Save Schedule";
+        currentRow = null;
+    }
+    
+    // Attach closeModal to cancel buttons
+    document.querySelectorAll('.close-modal-sched').forEach(btn => {
+        btn.addEventListener('click', closeModal);
+    });
+});
