@@ -1,109 +1,166 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SmartLab | Student Panel</title>
     <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body class="dashboard-body">
+    <header class="header">
+      <div class="logo">
+        <button id="sidebar-toggle" class="sidebar-toggle">
+          <span class="icon">☰</span>
+        </button>
+        <img src="images/PUPLogo.png" alt="SmartLab Logo" />
+        <h2>smartlab.</h2>
+        <p>Office of the Department of Information</p>
+      </div>
+
+      <div class="logout-container">
+        <button id="logout-btn" class="logout-btn">Log out</button>
+      </div>
+    </header>
+
     <main class="adminShell">
       <aside class="sidebar">
         <div class="sidebar-header">
           <div class="logo">
-            <img src="images/PUPLogo.png" alt="SmartLab Logo" />
-            <h2>smartlab.</h2>
+            <h2>Hi, Students!</h2>
           </div>
         </div>
 
         <nav class="navList">
-          <button class="navItem active" data-tab="borrow">Borrow</button>
+          <button class="navItem active" data-tab="request">Borrow</button>
+          <button class="navItem" data-tab="view-requests">My Requests</button>
           <button class="navItem" data-tab="schedule">Schedule</button>
-          <button class="navItem" data-tab="history">My Requests</button>
         </nav>
-
-        <div class="logout-container">
-          <button id="logout-btn" class="logout-btn">Log out</button>
-        </div>
       </aside>
 
       <section class="content">
-        <div class="card tabPanel" id="tab-borrow">
+        <div class="card tabPanel" id="tab-request">
           <div class="cardHeader">
-            <h3>Equipment Borrow Request</h3>
+            <h3>Item Borrowing Request Form</h3>
           </div>
 
           <p class="note">
-            <strong>Note:</strong> Borrow requests must be submitted ahead of
-            time and are subject to approval.
+            <strong>Note:</strong> Equipment requests must be filed at least
+            three (3) working days before the date needed.
           </p>
 
-          <form id="borrowForm" class="row">
-            <div>
-              <label>Date (Request Filed)</label>
-              <input type="date" required />
-            </div>
-
-            <div>
-              <label>Time (Request Filed)</label>
-              <input type="time" required />
-            </div>
-
+          <form id="studentRequestForm" class="row">
             <div class="full">
-              <label>Equipment Requested</label>
+              <label>Item/s to Borrow</label>
               <div class="checkgrid">
                 <label
                   ><input
                     type="checkbox"
                     name="particulars"
-                    value="Projector"
+                    value="LCD/LED TV"
                   />
-                  Projector</label
+                  LCD/LED TV</label
                 >
                 <label
                   ><input
                     type="checkbox"
                     name="particulars"
-                    value="Extension Cord"
+                    value="VGA/HDMI port"
                   />
-                  Extension Cord</label
+                  VGA/HDMI port</label
                 >
                 <label
                   ><input
                     type="checkbox"
                     name="particulars"
-                    value="HDMI Cable"
+                    value="Extension Cords"
                   />
-                  HDMI Cable</label
+                  Extension Cords</label
                 >
-                <label class="full">
-                  <input type="checkbox" id="partOthersChk" /> Others:
-                  <input type="text" id="partOthersTxt" disabled />
-                </label>
+                <label
+                  ><input
+                    type="checkbox"
+                    name="particulars"
+                    value="Projectors"
+                  />
+                  Projectors</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="particulars"
+                    value="Crimping tool"
+                  />
+                  Crimping tool</label
+                >
               </div>
             </div>
 
             <div>
-              <label>Date of Use</label>
-              <input type="date" required />
+              <label>Faculty In-Charge</label>
+              <input type="text" name="facultyInCharge" required />
             </div>
             <div>
-              <label>Time of Use</label>
-              <input type="time" required />
+              <label>Subject / Purpose of Use</label>
+              <input type="text" name="subject" required />
             </div>
             <div>
-              <label>Purpose</label>
-              <input type="text" required />
+              <label>Course, Year & Section</label>
+              <select
+                name="courseYearSection"
+                id="student-course-select"
+                required
+              >
+                <option value="" disabled selected>Select Course & Year</option>
+                <option value="BSIT-1">BSIT-1</option>
+                <option value="BSIT-2">BSIT-2</option>
+                <option value="BSIT-3">BSIT-3</option>
+                <option value="BSIT-4">BSIT-4</option>
+                <option value="DIT-1">DIT-1</option>
+                <option value="DIT-2">DIT-2</option>
+                <option value="DIT-3">DIT-3</option>
+                <option value="BSOA-2">BSOA-2</option>
+                <option value="BSOA-4">BSOA-4</option>
+              </select>
             </div>
 
             <div>
-              <label>Requested by (Name)</label>
-              <input type="text" required />
+              <label>Date of Use</label>
+              <input type="date" name="dateOfUse" required />
             </div>
-            <div>
-              <label>Contact Details</label>
-              <input type="text" required />
+
+            <div class="split-row">
+              <div>
+                <label>Time Start</label>
+                <input type="time" name="timeStart" required />
+              </div>
+              <div>
+                <label>Time End</label>
+                <input type="time" name="timeEnd" required />
+              </div>
+            </div>
+
+            <div class="full">
+              <label>Contact Details (Mobile/Email)</label>
+              <input type="text" name="contactDetails" required />
+            </div>
+
+            <div class="full">
+              <label for="purpose">Specific Purpose</label>
+              <textarea
+                name="purpose"
+                id="purpose"
+                placeholder="Briefly explain why you are borrowing these items..."
+                required
+                rows="4"
+              ></textarea>
             </div>
 
             <div class="actions full">
@@ -114,7 +171,7 @@
                 Cancel
               </button>
               <button type="submit" class="btn btnPrimary">
-                Submit Request
+                Submit Borrow Request
               </button>
             </div>
           </form>
@@ -122,35 +179,223 @@
 
         <div class="card tabPanel hidden" id="tab-schedule">
           <div class="cardHeader">
-            <h3>Laboratory Schedule</h3>
+            <h3>Laboratory Schedule Overview</h3>
+
+            <div class="header-actions">
+              <div class="filter-group">
+                <label for="lab-filter" class="sr-only"> Filter by Lab: </label>
+                <select id="lab-filter" class="filter-select">
+                  <option value="all">All Laboratories</option>
+                  <option value="1">Laboratory 1</option>
+                  <option value="2">Laboratory 2</option>
+                  <option value="3">Laboratory 3</option>
+                </select>
+              </div>
+            </div>
           </div>
+
           <div class="tableWrap">
             <table>
               <thead>
                 <tr>
                   <th>Lab</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Status</th>
+                  <th>Faculty</th>
+                  <th>Section</th>
+                  <th>Year</th>
+                  <th>Day</th>
+                  <th>Time Start</th>
+                  <th>End</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Lab 1</td>
-                  <td>2025-12-20</td>
-                  <td>09:00 - 11:00</td>
-                  <td><span class="pill">Occupied</span></td>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>MONDAY</td>
+                  <td>8:00</td>
+                  <td>10:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>DIT</td>
+                  <td>1</td>
+                  <td>MONDAY</td>
+                  <td>10:00</td>
+                  <td>1:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>1</td>
+                  <td>MONDAY</td>
+                  <td>2:00</td>
+                  <td>4:30</td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>V. Dungca</td>
+                  <td>BSIT</td>
+                  <td>4</td>
+                  <td>TUESDAY</td>
+                  <td>8:00</td>
+                  <td>11:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>2</td>
+                  <td>TUESDAY</td>
+                  <td>1:00</td>
+                  <td>4:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>4</td>
+                  <td>TUESDAY</td>
+                  <td>5:00</td>
+                  <td>8:30</td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>WEDNESDAY</td>
+                  <td>8:30</td>
+                  <td>12:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>DIT</td>
+                  <td>2</td>
+                  <td>WEDNESDAY</td>
+                  <td>1:30</td>
+                  <td>4:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSIT</td>
+                  <td>4</td>
+                  <td>WEDNESDAY</td>
+                  <td>5:30</td>
+                  <td>8:30</td>
+                </tr>
+
+                <tr>
+                  <td>1</td>
+                  <td>T. Loreto</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>THURSDAY</td>
+                  <td>7:30</td>
+                  <td>10:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>DIT</td>
+                  <td>1</td>
+                  <td>THURSDAY</td>
+                  <td>10:30</td>
+                  <td>1:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>1</td>
+                  <td>THURSDAY</td>
+                  <td>2:30</td>
+                  <td>5:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>M. Enteria</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>THURSDAY</td>
+                  <td>7:30</td>
+                  <td>9:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>M. Enteria</td>
+                  <td>DIT</td>
+                  <td>3</td>
+                  <td>FRIDAY</td>
+                  <td>8:00</td>
+                  <td>1:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSOA</td>
+                  <td>2</td>
+                  <td>FRIDAY</td>
+                  <td>1:30</td>
+                  <td>4:30</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>A. Zurbano</td>
+                  <td>BSIT</td>
+                  <td>3</td>
+                  <td>SATURDAY</td>
+                  <td>8:00</td>
+                  <td>1:00</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L. Tabien</td>
+                  <td>BSIT</td>
+                  <td>2</td>
+                  <td>SATURDAY</td>
+                  <td>2:00</td>
+                  <td>8:00</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <div class="card tabPanel hidden" id="tab-history">
+        <div class="card tabPanel hidden" id="tab-view-requests">
           <div class="cardHeader">
-            <h3>My Borrow History</h3>
+            <h3>My Request</h3>
           </div>
-          <p>No recent requests found.</p>
+
+          <div class="tableWrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date Filed</th>
+                  <th>Items Borrowed</th>
+                  <th>Usage Date</th>
+                  <th>Schedule</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="studentRequestsBody">
+                <tr>
+                  <td>2026-01-19</td>
+                  <td>Projector, HDMI Cable</td>
+                  <td>2026-01-22</td>
+                  <td>1:00 PM - 3:00 PM</td>
+                  <td><span class="pill status-pending">Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     </main>

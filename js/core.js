@@ -199,3 +199,116 @@ function setupTabs() {
   });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents click from bubbling up
+            sidebar.classList.toggle('active');
+        });
+
+        // Optional: Close sidebar if user clicks outside of it
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    }
+});
+
+/**
+ * SmartLab Core - Shared Functions
+ */
+
+const SmartLab = {
+    // 1. SHARED TAB SWITCHING
+    // Automatically handles any button with .navItem and any panel with .tabPanel
+    initTabs: function() {
+        const navItems = document.querySelectorAll('.navItem');
+        const tabPanels = document.querySelectorAll('.tabPanel');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const target = item.getAttribute('data-tab');
+                
+                // Update Buttons
+                navItems.forEach(btn => btn.classList.remove('active'));
+                item.classList.add('active');
+
+                // Update Panels
+                tabPanels.forEach(panel => panel.classList.add('hidden'));
+                const targetPanel = document.getElementById(`tab-${target}`);
+                if (targetPanel) targetPanel.classList.remove('hidden');
+            });
+        });
+    },
+
+    // 2. UNIVERSAL TABLE FILTER
+    // @param selectId: The ID of the dropdown
+    // @param tableId: The ID of the table or tbody to filter
+    // @param colIndex: Which column index to check (0, 1, 2...)
+    initTableFilter: function(selectId, tableId, colIndex) {
+        const filterSelect = document.getElementById(selectId);
+        const table = document.getElementById(tableId);
+        
+        if (!filterSelect || !table) return;
+
+        filterSelect.addEventListener('change', (e) => {
+            const filterValue = e.target.value.toLowerCase();
+            const rows = table.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const cellText = row.cells[colIndex].innerText.toLowerCase();
+                
+                // If "all" is selected or the text matches the filter
+                if (filterValue === 'all' || cellText.includes(filterValue)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    },
+
+    // 3. MODAL HANDLER
+    toggleModal: function(modalId, show = true) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+        
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex-display');
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex-display');
+        }
+    }
+};
+
+// Auto-initialize tabs on every page that has core.js
+document.addEventListener('DOMContentLoaded', () => {
+    SmartLab.initTabs();
+});
+
+// laboratory filter for faculty schedule
+const labFilter = document.getElementById('lab-filter');
+const scheduleTableRows = document.querySelectorAll('#tab-schedule tbody tr');
+
+if (labFilter) {
+    labFilter.addEventListener('change', (e) => {
+        const selectedLab = e.target.value; // Will be "1", "2", "3", or "all"
+
+        scheduleTableRows.forEach(row => {
+            // Get the text from the first column and remove any extra spaces
+            const cellValue = row.cells[0].innerText.trim(); 
+            
+            if (selectedLab === 'all' || cellValue === selectedLab) {
+                row.style.display = ''; 
+            } else {
+                row.style.display = 'none'; 
+            }
+        });
+    });
+}

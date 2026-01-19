@@ -78,3 +78,61 @@
 
   console.log("Faculty Panel Script Loaded.");
 })();
+
+facultyRequestForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // Auto-generate the timestamp
+    const now = new Date();
+    const dateFiled = now.toLocaleDateString();
+    const timeFiled = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const formData = new FormData(facultyRequestForm);
+    const requestData = Object.fromEntries(formData.entries());
+    
+    // Combine with the auto-generated data
+    const finalSubmission = {
+        ...requestData,
+        dateFiled,
+        timeFiled,
+        status: 'Pending'
+    };
+
+    console.log("Submitting Request:", finalSubmission);
+    alert('Request submitted successfully!');
+});
+
+const requestForm = document.getElementById('facultyRequestForm');
+
+if (requestForm) {
+    requestForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // 1. Get current date and time
+        const now = new Date();
+        const dateNow = now.toISOString().split('T')[0]; // YYYY-MM-DD
+        const timeNow = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        // 2. Collect Form Data
+        const formData = new FormData(requestForm);
+        const data = Object.fromEntries(formData.entries());
+
+        // 3. Combine them
+        const finalData = {
+            ...data,
+            dateFiled: dateNow,
+            timeFiled: timeNow,
+            status: 'Pending'
+        };
+
+        console.log("Saving Request:", finalData);
+        alert(`Request submitted successfully on ${dateNow} at ${timeNow}!`);
+        
+        // Optional: Reset form
+        requestForm.reset();
+        document.getElementById('labSelectWrap').style.display = 'none';
+    });
+}
+
+
+

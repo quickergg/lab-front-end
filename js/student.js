@@ -5,32 +5,71 @@
   logoutSetup();           // Initialize logout button
   setupTabs();             // THIS FIXES NAVIGATION: Enables tab switching
 
-  // 2. FORM LOGIC
-  const form = $("borrowForm");
-  
-  if (form) {
-    // Setup the "Others" checkbox for equipment
-    setupOthersToggle("partOthersChk", "partOthersTxt");
+  const studentForm = document.getElementById('studentRequestForm');
 
-    // Handle "New Request" and "Cancel" buttons
-    setupNewCancel("borrowForm", () => {
-      const othersTxt = $("partOthersTxt");
-      if (othersTxt) othersTxt.disabled = true;
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Tab Switching Logic
+    const navItems = document.querySelectorAll('.navItem');
+    const tabPanels = document.querySelectorAll('.tabPanel');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            navItems.forEach(btn => btn.classList.remove('active'));
+            tabPanels.forEach(panel => panel.classList.add('hidden'));
+
+            item.classList.add('active');
+            const target = item.getAttribute('data-tab');
+            document.getElementById(`tab-${target}`).classList.remove('hidden');
+        });
     });
 
-    // Form Submission
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      
-      // Simple logic to show it works
-      const studentName = form.querySelector('input[type="text"]').value;
-      console.log("Borrow request from:", studentName);
-      
-      alert("Student borrow request submitted (mock).");
-      form.reset();
-      if ($("partOthersTxt")) $("partOthersTxt").disabled = true;
-    });
-  }
+    // 2. Form Submission with Auto-Date
+    const studentForm = document.getElementById('studentRequestForm');
+    
+    if (studentForm) {
+        studentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-  console.log("Student panel initialized.");
+            // Automatic date recording
+            const today = new Date().toISOString().split('T')[0];
+            
+            const formData = new FormData(studentForm);
+            const data = Object.fromEntries(formData.entries());
+
+            // Get all checked particulars
+            const items = Array.from(formData.getAll('particulars')).join(', ');
+
+            // Constructing the data for the table
+            const newRequest = {
+                dateFiled: today,
+                items: items,
+                dateOfUse: data.dateOfUse,
+                schedule: `${data.timeStart} - ${data.timeEnd}`,
+                status: 'Pending'
+            };
+
+            console.log("Saving student request:", newRequest);
+            
+            // Add to table (Visual only for now)
+            addRequestToTable(newRequest);
+            
+            alert('Request submitted! You can track the status in the "My Requests" tab.');
+            studentForm.reset();
+        });
+    }
+
+    function addRequestToTable(req) {
+        const tbody = document.getElementById('studentRequestsBody');
+        const row = `
+            <tr>
+                <td>${req.dateFiled}</td>
+                <td>${req.items}</td>
+                <td>${req.dateOfUse}</td>
+                <td>${req.schedule}</td>
+                <td><span class="pill status-pending">${req.status}</span></td>
+            </tr>
+        `;
+        tbody.insertAdjacentHTML('afterbegin', row);
+    }
+});
 })();
